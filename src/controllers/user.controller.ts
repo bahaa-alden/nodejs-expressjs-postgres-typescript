@@ -18,7 +18,7 @@ import { defaultOrderParams } from '../utils/order';
 import { defaultPaginationParams } from '../utils/pagination';
 import { existRecord, needRecord } from '../utils/record';
 import { Role, User } from '@prisma/client';
-import { excludeFields, excludeFieldsFromArray } from '../utils/utils';
+import { excludeFields } from '../utils/utils';
 
 export class UserController {
   // SignUp user handler
@@ -102,13 +102,11 @@ export class UserController {
       );
     }
 
-    const user = needRecord(
-      await userRepository.patchById(req.user.id, updateBody),
-    );
+    const data = await userRepository.patchById(req.user.id, updateBody);
 
     res.ok({
       message: 'User has been updated',
-      data: excludeFields(user, ['password']),
+      data,
     });
   }
 
@@ -142,7 +140,7 @@ export class UserController {
       const users = await userRepository.findForUser(options);
       res.ok({
         message: 'success',
-        data: excludeFieldsFromArray(users, ['password']),
+        data: users,
       });
     },
   );
@@ -185,13 +183,11 @@ export class UserController {
         );
       }
 
-      const updatedUser = needRecord(
-        await userRepository.patchById(req.user.id, updateBody),
-      );
+      const data = await userRepository.patchById(req.user.id, updateBody);
 
       res.ok({
         message: 'User has been updated',
-        data: excludeFields(updatedUser, ['password']),
+        data,
       });
     },
   );

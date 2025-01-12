@@ -48,11 +48,12 @@ export class UserRepository {
     return await this.model.findMany({ where: { ...query, deletedAt: null } });
   }
 
-  async patchById(
-    id: string,
-    data: Prisma.UserUpdateInput,
-  ): Promise<User | null> {
-    return await this.model.update({ where: { id }, data });
+  async patchById(id: string, data: Prisma.UserUpdateInput) {
+    return await this.model.update({
+      where: { id },
+      omit: { password: true },
+      data,
+    });
   }
 
   async updateMany(
@@ -65,11 +66,11 @@ export class UserRepository {
     });
   }
 
-  async deleteById(id: string): Promise<User | null> {
+  async deleteById(id: string) {
     return await this.patchById(id, { deletedAt: new Date() });
   }
 
-  async findForUser(options: FindUserOptions): Promise<User[]> {
+  async findForUser(options: FindUserOptions) {
     const { pagination, order, search } = options;
     const where: Prisma.UserWhereInput = { deletedAt: null };
 
@@ -87,6 +88,7 @@ export class UserRepository {
       orderBy: {
         [order.column]: order.direction === OrderDirection.asc ? 'asc' : 'desc',
       },
+      omit: { password: true },
     });
   }
 
