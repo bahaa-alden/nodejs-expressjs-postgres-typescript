@@ -1,40 +1,46 @@
 ---
 to: src/database/repositories/<%= nameDash %>.repository.ts
 ---
-import { type FilterQuery } from 'mongoose'
+import { <%= Name %>, Prisma } from '@prisma/client';
 import { type PaginatedList } from '../../utils/pagination'
 import { OrderDirection, type OrderOptions } from '../../utils/order'
 import { BaseRepository, type FindOptions } from './base.repository'
 import <%= Name %>, { type I<%= Name %> } from '../models/<%= nameDash %>.model'
+import prisma from '../prisma-client';
 
-export interface <%= Name %>FilterOptions {}
+export interface <%= Name %>FilterOptions {
+  // add Filter
+}
 
 export interface <%= Name %>FindOptions extends FindOptions<<%= Name %>FilterOptions> {
   order: OrderOptions
 }
 
-export class <%= Name %>Repository extends BaseRepository<I<%= Name %>> {
+export class <%= Name %>Repository extends BaseRepository<<%= Name %>,
+  Prisma.<%= Name %>CreateInput,
+  Prisma.<%= Name %>WhereInput,
+  Prisma.<%= Name %>UpdateInput> {
   constructor() {
-    super(<%= Name %>)
+    super(prisma.<%= name %>);
   }
 
-  async findForAdmin(options: <%= Name %>FindOptions): Promise<PaginatedList<I<%= Name %>>> {
+  async findForAdmin(options: <%= Name %>FindOptions): Promise<PaginatedList<<%= Name %>>> {
     const { order, pagination, search } = options
 
-    const query: FilterQuery<I<%= Name %>> = { deletedAt: null }
+    const query:  Prisma.<%= Name %>WhereInput = { deletedAt: null }
     if (search) {
-      query.$or = []
+      query.OR = []
     }
 
-    const total = await this.model.where(query).countDocuments()
-    const results = await this.model.find(query).sort({
-      [order.column]: order.direction === OrderDirection.asc ? 1 : -1,
-    })
-      .limit(pagination.pageSize)
-      .skip(pagination.page * pagination.pageSize)
-
-    return { results, total }
-  }
+      return await this.model.findMany({
+      query,
+      skip: pagination.pageSize * (pagination.page - 1),
+      take: pagination.pageSize,
+      orderBy: {
+        [order.column]: order.direction === OrderDirection.asc ? 'asc' : 'desc',
+      },
+    });
+    }
 }
 
 export const <%= name %>Repository = new <%= Name %>Repository()
