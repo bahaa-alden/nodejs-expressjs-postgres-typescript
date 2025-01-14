@@ -2,11 +2,10 @@
 to: "src/schemas/<%= nameDash %>.schema.ts"
 ---
 import { object, z, string, type TypeOf } from 'zod';
-import { zodObjectId } from '../middlewares/validator';
-import { orderColumn, orderDirection, page, pageSize } from './common';
+import {cuid, orderColumn, orderDirection, page, pageSize } from './common';
 
 const <%= name %>IdSchema = object({
-  id: zodObjectId,
+  id: cuid,
 });
 
 export type I<%= Name %>IdSchema = TypeOf<typeof <%= name %>IdSchema>;

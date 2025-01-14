@@ -6,9 +6,7 @@ after: // <creating-property-create-schema\-<%= object %> />
 <% if (isAddToValidation) { -%>
   <% if (kind === 'reference') { -%>
     <% if (referenceType === 'oneToOne' || referenceType === 'manyToOne') { -%>
-    <%= property %>Id: zodObjectId<% if (isOptional) { -%>.optional()<% } -%><% if (isNullable) { -%>.nullable()<% } -%>,
-    <% } else if (referenceType === 'oneToMany' || referenceType === 'manyToMany') { -%>
-    <%= property %>Ids: zodObjectId.array()<% if (isOptional) { -%>.optional()<% } -%><% if (isNullable) { -%>.nullable()<% } -%>,
+      <%= property %>Id: cuid<% if (isOptional) { -%>.optional()<% } -%><% if (isNullable) { -%>.nullable()<% } -%>,
     <% } -%>
   <% } else if (kind === 'enum') { -%>
     <%= property %>: z<% if (isArray) {-%>.array( z<% }-%>.nativeEnum(<%= EnumType %>)<% if (isArray) {-%>) <% }-%><% if (isOptional) { -%>.optional()<% } -%><% if (isNullable) { -%>.nullable()<% } -%>,

@@ -17,7 +17,6 @@ import {
 } from '../schemas/<%= nameDash %>.schema';
 import { defaultOrderParams } from '../utils/order';
 import { defaultPaginationParams } from '../utils/pagination';
-import { RoleCode } from '../utils/enum';
 import { needRecord } from '../utils/record';
 
 export class <%= Name %>Controller {

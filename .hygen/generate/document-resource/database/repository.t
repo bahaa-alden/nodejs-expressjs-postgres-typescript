@@ -5,7 +5,6 @@ import { <%= Name %>, Prisma } from '@prisma/client';
 import { type PaginatedList } from '../../utils/pagination'
 import { OrderDirection, type OrderOptions } from '../../utils/order'
 import { BaseRepository, type FindOptions } from './base.repository'
-import <%= Name %>, { type I<%= Name %> } from '../models/<%= nameDash %>.model'
 import prisma from '../prisma-client';
 
 export interface <%= Name %>FilterOptions {

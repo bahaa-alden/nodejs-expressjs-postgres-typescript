@@ -9,4 +9,5 @@ model <%= Name %> {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   deletedAt DateTime?
+  // add index <%= Name %>
 }
