@@ -26,13 +26,13 @@ export class <%= Name %>Repository extends BaseRepository<<%= Name %>,
   async findForAdmin(options: <%= Name %>FindOptions): Promise<PaginatedList<<%= Name %>>> {
     const { order, pagination, search } = options
 
-    const query:  Prisma.<%= Name %>WhereInput = { deletedAt: null }
+    const where:  Prisma.<%= Name %>WhereInput = { deletedAt: null }
     if (search) {
-      query.OR = []
+      where.OR = []
     }
 
       return await this.model.findMany({
-      query,
+      where,
       skip: pagination.pageSize * (pagination.page - 1),
       take: pagination.pageSize,
       orderBy: {

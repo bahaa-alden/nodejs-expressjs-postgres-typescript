@@ -1,9 +1,6 @@
 ---
 inject: true
 to: src/database/prisma/schema.prisma
-after:  // add index <%= Name %>
+after:  <% if (kind === 'reference' && (referenceType === 'oneToOne' || referenceType === 'manyToOne')) { -%>// add index <%= Name %><% } -%>
 ---
-<% if (kind === 'reference') { -%>
-  <% if (referenceType === 'oneToOne' || referenceType === 'manyToOne') { -%>
-   @@index([<%= property %>Id]) 
-<% }  -%>
+<% if (kind === 'reference' && (referenceType === 'oneToOne' || referenceType === 'manyToOne')) { -%>  @@index([<%= property %>Id]) <% } -%>

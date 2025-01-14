@@ -5,12 +5,12 @@ import { Router } from 'express';
 import validator from '../middlewares/validator';
 import <%= name %>Schema from '../schemas/<%= nameDash %>.schema';
 import restrict from '../middlewares/restrict';
-import { RoleCode } from '../utils/enum';
+import { Role } from '@prisma/client';
 import { authorizationMiddleware } from '../auth/authorization';
 import { <%= name %>Controller } from '../controllers/<%= nameDash %>.controller';
 import authSchema from '../schemas/auth.schema';
 import { authController } from '../controllers/auth.controller';
-const {<%=  allRole %>}= RoleCode; 
+const {<%=  allRole %>}= Role; 
 
 export class <%= Name %>Routes {
   public router: Router;

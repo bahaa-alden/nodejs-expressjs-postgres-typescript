@@ -1,7 +1,6 @@
 import { PaginationOptions } from '../../utils/pagination';
 import { OrderOptions } from '../../utils/order';
 import { Prisma } from '@prisma/client';
-import prisma from '../prisma-client';
 
 export interface FindOptions<T> {
   order: OrderOptions;

@@ -1,10 +1,6 @@
 ---
 inject: true
 to: src/database/prisma/schema.prisma
-after:  // add enum 
+after:  // add enum
 ---
-<% if (kind === 'enum' && isEnumDefined === 'no') { -%>
-enum <%= EnumType %> {
-<%= enumValue %>
-}
-<% } -%>
+<% if (kind === 'enum' && isEnumDefined === 'no') { -%>enum <%= EnumType %> {<%= enumValue %>}<% } -%>

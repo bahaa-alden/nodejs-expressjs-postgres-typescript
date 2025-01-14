@@ -130,20 +130,16 @@ module.exports = {
                           message: 'Select type of reference',
                           choices: [
                             {
-                              message: `One to one (${rootValues.name} contains only one instance of ${referenceValues.type}, and ${referenceValues.type} contains only one instance of ${rootValues.name}. ${rootValues.property}: ${referenceValues.type})`,
+                              message: `One to one (${rootValues.name} contains only one instance of ${referenceValues.type}, and ${referenceValues.type} contains only one instance of ${rootValues.name}. ${rootValues.name}: ${referenceValues.type})`,
                               value: 'oneToOne',
                             },
                             {
-                              message: `One to many (${rootValues.name} contains multiple instances of ${referenceValues.type}, but ${referenceValues.type} contains only one instance of ${rootValues.name}. ${rootValues.property}: ${referenceValues.type}[])`,
+                              message: `One to many (${rootValues.name} contains multiple instances of ${referenceValues.type}, but ${referenceValues.type} contains only one instance of ${rootValues.name}. ${rootValues.name}: ${referenceValues.type}[])`,
                               value: 'oneToMany',
                             },
                             {
-                              message: `Many to one (${rootValues.name} contains only one instance of ${referenceValues.type}, but ${referenceValues.type} contains multiple instances of ${rootValues.name}. ${rootValues.property}: ${referenceValues.type})`,
+                              message: `Many to one (${rootValues.name} contains only one instance of ${referenceValues.type}, but ${referenceValues.type} contains multiple instances of ${rootValues.name}. ${rootValues.name}[]: ${referenceValues.type})`,
                               value: 'manyToOne',
-                            },
-                            {
-                              message: `Many to many (${rootValues.name} contains multiple instances of ${referenceValues.type}, and ${referenceValues.type} contains multiple instances of ${rootValues.name}. ${rootValues.property}: ${referenceValues.type}[])`,
-                              value: 'manyToMany',
                             },
                           ],
                         });
@@ -225,17 +221,6 @@ module.exports = {
         }),
       )
       .then(
-        collectPromisesResults((values) => {
-          if (values.kind === 'primitive' && values.type === 'string')
-            return prompter.prompt({
-              type: 'confirm',
-              name: 'isText',
-              message: 'do you want it to be a index?',
-              initial: true,
-            });
-        }),
-      )
-      .then(
         collectPromisesResults(() => {
           return prompter.prompt({
             type: 'confirm',
@@ -266,6 +251,14 @@ module.exports = {
             message: 'Can the property be nullable??',
             initial: true,
           });
+        }),
+      )
+      .then(
+        collectPromisesResults((values) => {
+          if (!values.Type) {
+            values.Type = 'User';
+            return;
+          }
         }),
       ),
 };

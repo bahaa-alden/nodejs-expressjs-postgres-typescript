@@ -26,15 +26,14 @@ const eqValueFormat = (values, field) => {
       .toLowerCase() +
     values[field.charAt(0).toUpperCase() + field.slice(1)].slice(1);
   let dash = '';
-  for (let i = 0; values[field].length; i++) {
+  for (let i = 0; i < values[field].length; i++) {
     if (values[field][i].toUpperCase() == values[field][i])
-      return `-${values[field][i].toLowerCase()}`;
-    return values[field][i];
+      dash += `-${values[field][i].toLowerCase()}`;
+    else dash += values[field][i];
   }
   values[field + 'Dash'] = dash;
   return values;
 };
-
 module.exports = {
   prompt: ({ prompter, args }) =>
     prompter
@@ -118,61 +117,11 @@ module.exports = {
                   value: 'primitive',
                 },
                 { message: 'Enum type', value: 'enum' },
-                { message: 'Reference to entity', value: 'reference' },
               ],
             })
             .then(
               collectPromisesResults((values) => {
-                if (values.kind === 'reference') {
-                  return prompter
-                    .prompt({
-                      type: 'input',
-                      name: 'type',
-                      message: "Entity name (e.g. 'File')",
-                      validate: (input) => {
-                        if (!input.trim()) {
-                          return 'Entity name is required';
-                        }
-
-                        return true;
-                      },
-                      format: (input) => {
-                        return formatCamals(input, 0);
-                      },
-                    })
-                    .then(
-                      collectPromisesResults((values) => {
-                        return eqValueFormat(values, 'type');
-                      }),
-                    )
-                    .then(
-                      collectPromisesResults((referenceValues) => {
-                        return prompter.prompt({
-                          type: 'select',
-                          name: 'referenceType',
-                          message: 'Select type of reference',
-                          choices: [
-                            {
-                              message: `One to one (${rootValues.object} contains only one instance of ${referenceValues.type}, and ${referenceValues.type} contains only one instance of ${rootValues.object}. ${rootValues.property}: ${referenceValues.type})`,
-                              value: 'oneToOne',
-                            },
-                            {
-                              message: `One to many (${rootValues.object} contains multiple instances of ${referenceValues.type}, but ${referenceValues.type} contains only one instance of ${rootValues.object}. ${rootValues.property}: ${referenceValues.type}[])`,
-                              value: 'oneToMany',
-                            },
-                            {
-                              message: `Many to one (${rootValues.object} contains only one instance of ${referenceValues.type}, but ${referenceValues.type} contains multiple instances of ${rootValues.object}. ${rootValues.property}: ${referenceValues.type})`,
-                              value: 'manyToOne',
-                            },
-                            {
-                              message: `Many to many (${rootValues.object} contains multiple instances of ${referenceValues.type}, and ${referenceValues.type} contains multiple instances of ${rootValues.object}. ${rootValues.property}: ${referenceValues.type}[])`,
-                              value: 'manyToMany',
-                            },
-                          ],
-                        });
-                      }),
-                    );
-                } else if (values.kind === 'enum') {
+                if (values.kind === 'enum') {
                   return prompter
                     .prompt({
                       type: 'input',
@@ -238,24 +187,12 @@ module.exports = {
       )
       .then(
         collectPromisesResults((values) => {
-          if (values.kind !== 'reference')
-            return prompter.prompt({
-              type: 'confirm',
-              name: 'isArray',
-              message: 'do you want it to be a Array?',
-              initial: true,
-            });
-        }),
-      )
-      .then(
-        collectPromisesResults((values) => {
-          if (values.kind === 'primitive' && values.type === 'string')
-            return prompter.prompt({
-              type: 'confirm',
-              name: 'isText',
-              message: 'do you want it to be a index?',
-              initial: true,
-            });
+          return prompter.prompt({
+            type: 'confirm',
+            name: 'isArray',
+            message: 'do you want it to be a Array?',
+            initial: true,
+          });
         }),
       )
       .then(

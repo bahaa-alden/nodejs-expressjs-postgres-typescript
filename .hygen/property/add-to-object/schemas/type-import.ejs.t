@@ -6,5 +6,5 @@ async: true
 skip_if: <% if (kind === 'enum') { -%>import { <%= enumType %><% } else { -%><%= true %><% } -%>
 ---
 <% if (kind === 'enum') { -%>
-  import { <%= EnumType %> } from './../utils/enum';
+import {  <%= EnumType %> } from '@prisma/client';
 <% } -%>

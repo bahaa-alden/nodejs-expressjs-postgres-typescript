@@ -70,7 +70,14 @@ export class <%= Name %>Controller {
       res: Response,
       next: NextFunction,
     ): Promise<void> => {
-      const new<%= Name %> = req.valid.body;
+            const {
+        // get id
+        ...bodyWithoutAnyId
+      } = req.valid.body;
+      const new<%= Name %> ={
+        ...bodyWithoutAnyId,
+       // set id
+      };
       const <%= name %> = await <%= name %>Repository.insert(new<%= Name %>);
       if (<%= name %> === null) {
         throw new InternalError();

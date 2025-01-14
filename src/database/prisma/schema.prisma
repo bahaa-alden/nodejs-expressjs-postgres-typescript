@@ -13,8 +13,8 @@ datasource db {
 
 
 model User {
-  // add prop User
   id        String     @id @default(cuid())
+  // add prop User
   status    UserStatus @default(INACTIVE)
   name      String
   email     String     @unique
@@ -23,6 +23,7 @@ model User {
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
   deletedAt DateTime?
+  // add index User
   @@index([email])
 }
 // add enum 
