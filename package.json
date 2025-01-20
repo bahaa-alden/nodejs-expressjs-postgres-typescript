@@ -14,7 +14,7 @@
     "tslint": "tslint -c tslint.json -p tsconfig.json",
     "format": "prettier --write \"src/**/*.ts\"",
     "generate:resource:document": "hygen generate document-resource",
-    "postgenerate:resource:document": "yarn format",
+    "postgenerate:resource:document": "yarn format && yarn migrations:run",
     "add:property:document": "hygen property add-to-document",
     "postadd:property:document": "yarn format",
     "add:property:object": "hygen property add-to-object",
